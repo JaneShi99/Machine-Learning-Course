@@ -21,12 +21,9 @@ for iter = 1:num_iters
     features = n
     sigma = zeros(features,1)
     for j = 1:features
-        %accum = 0
         for i = 1:m
             sigma (j,1) = sigma(j,1) + (theta' *  X(i, :)' - y(i) ) * X(i,j)
-            %accum = accum + (theta' * X(i(theta' * X(j, :)' - y(j) ) * X(j,i), :)' - y(i) ) * X(i,j)
         endfor
-        %sigma(j,1)=accum
     endfor
     theta = theta - (alpha/m) * sigma
 
