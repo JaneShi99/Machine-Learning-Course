@@ -22,10 +22,27 @@ idx = zeros(size(X,1), 1);
 %
 
 
+%m=size(X)(1)
+%disp(size(X));
+%disp(m);
+%disp(size(K));
+%disp(size(centroids));
+%minIndex=1;
 
-
-
-
+for i=1:size(X)(1)
+    x_i = X(i,:);
+    x_centroid=zeros(size(centroids)(1),1);
+    for j=1:size(centroids)(1)
+        centroid_j = centroids(j,:);
+        x_centroid(j) = sum((x_i-centroid_j) .^ 2);
+    end
+    %disp(x_centroid);
+    minval = min(x_centroid);
+    [index,y] = find(x_centroid==minval);
+    %disp(index);
+    idx(i)= index;
+end
+%disp(idx);
 
 % =============================================================
 

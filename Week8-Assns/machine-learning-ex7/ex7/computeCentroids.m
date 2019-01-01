@@ -26,7 +26,21 @@ centroids = zeros(K, n);
 % Note: You can use a for-loop over the centroids to compute this.
 %
 
-
+for i=1:K
+    num_x = 0;
+    accum_vec = zeros(1,n);
+    for j=1:m
+            if (idx(j)==i)
+            accum_vec = accum_vec + X(j,:);
+            num_x = num_x + 1;
+        end
+    end    
+    if num_x == 0
+        centroids(i,:) = centroids(i,:);
+    else
+        centroids(i,:) = accum_vec ./ num_x;
+    end
+end
 
 
 
