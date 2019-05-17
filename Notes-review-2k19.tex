@@ -13,7 +13,7 @@
 \usepackage{ifthen} 
 \usepackage{amsmath}
 \usepackage{listings}  
-
+\usepackage{amssymb}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -124,8 +124,53 @@ Definition of ML\\
 
 \underline{Linear regression}
 \begin{center}
-	repeat until converge\{
-		\[\]\}	
+	\begin{itemize}
+		\item 	Repeat until converge\{
+		$  \theta_j := \theta_j - \alpha\frac{\partial}{\partial \theta_j}J(\theta_0,\theta_1) \text{ for } j = 0,1 $ \}	
+		\item  Note that the update is \underline{simultaneous} :
+		\item 
+		\[ \text{temp}_0 := \theta_0 - \alpha\frac{\partial}{\partial \theta_0}J(\theta_0,\theta_1) \] 
+		\[ \text{temp}_1 := \theta_1 - \alpha\frac{\partial}{\partial \theta_1}J(\theta_0,\theta_1) \]
+		\[\theta_0 := \text{temp}_0 \]
+		\[\theta_1 := \text{temp}_1\]
+		\item if we compute the derivative we get
+		Repeat until converge\{
+		
+		\[ \theta_0 := \theta_0 - \alpha\frac{1}{m}\sum_{i=1}^{m}(h_{\theta}(x_i)-y_i) \] 
+		\[ \theta_1 := \theta_1 - \alpha\frac{1}{m}\sum_{i=1}^{m}((h_{\theta}(x_i)-y_i) x_i)\] 
+		
+		\}	
+		
+		\item $\alpha$ is the learning rate. 
+		\item we use linear regression algorithm to updates the parameters until we arrive at the minimal cost.
+	\end{itemize}
+
 \end{center}
+
+\section*{Week 2}
+\underline{Multi-feature linear regression}\\
+\begin{itemize}
+\item Hypothesis
+\[h_\theta (x) = \theta_0+ \theta_1x_1 +\ldots \theta_nx_n\]
+\item convenience $\forall x$, $x_0=1$, so that $h_\theta= \sum_{i=0}^{n}\theta_ix_i$
+\item 
+$$ x= \begin{bmatrix}
+	x_0 \\
+	x_1 \\
+	\vdots \\
+	x_n
+\end{bmatrix}
+ \in \mathbb{R} ^{n+1}
+\text{ and that } \theta = \begin{bmatrix}
+	\theta_0 \\
+	\theta_1 \\
+	\vdots \\
+	\theta_n
+\end{bmatrix}
+$$
+\item Hypothesis can be represented
+\end{itemize}
+
+
 
 \end{document}
