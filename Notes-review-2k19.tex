@@ -1,0 +1,131 @@
+
+
+\documentclass[12pt]{article} 
+
+
+%%%%%%% a few packages
+\usepackage{fullpage}
+\usepackage{todonotes}
+\usepackage{color}
+\usepackage{hyperref} % for the URL
+\usepackage{pst-tree} % for the trees
+\usepackage{verbatim} 
+\usepackage{ifthen} 
+\usepackage{amsmath}
+\usepackage{listings}  
+
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{frame=tb,
+	language=Python,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
+
+
+%%%%%% for pst-tree, define a node that ALWAYS has the same width (here "99")
+\newlength{\nodeLength}
+\newcommand{\Node}{A}
+\newcommand{\setnode}[1]{ \settowidth{\nodeLength}{#1}
+  \renewcommand{\Node}[1]{ \Tcircle{\makebox[\nodeLength]{##1}} }
+}
+\setnode{99}
+
+%%%%%%%%%%%%%%%%%%%%% algo.sty copied over %%%%%%%%%%%%%%%%%%%%%
+\newcounter{algorithmeligne}
+\newcommand{\instr}[1]{%\underline
+                        {\bf #1}}
+\newcommand{\nomproc}[1]{{\rm\bf #1}}
+\newenvironment{algorithme} { \setcounter{algorithmeligne}{0}
+        \newcommand{\lign}{\stepcounter{algorithmeligne}
+                \>{\footnotesize \arabic{algorithmeligne}.}\> }
+        \begin{center}
+        \begin{tabular}{|c|}
+        \hline
+        \begin{minipage}{1cm} \small \, \ \ \\[-11mm] \begin{tabbing}
+\=\hskip1cm\=\qquad\=\qquad\=\qquad\=\qquad\=\qquad\=\qquad\=\qquad\=\qquad\=\qquad\=\qquad\=\qquad\\\kill 
+        }
+        {
+        \end{tabbing}
+        \ \ \\[-8mm]
+        \end{minipage}
+        \\\hline
+        \end{tabular}
+        \end{center}
+        }
+
+
+\setlength{\parskip}{0.25cm plus 4mm minus 3mm}
+
+
+
+\begin{document}
+
+\begin{center}
+{\Large \bf Coursera- Machine Learning}\\
+\vspace{3mm}
+{\Large \bf May 2019}\\
+\vspace{3mm}
+{\Large \bf Taught by Prof. Andrew Ng}\\
+\vspace{3mm}
+\textbf{Janeshi99}\\
+\end{center}
+
+
+\section*{Summary}
+Supervised learning
+\begin{itemize}
+	\item linear regression, logistic regression, neural network, SVMs
+\end{itemize}
+Unsupervised learning
+\begin{itemize}
+	\item k-means, PCA, Anomaly detection
+\end{itemize}
+Special applications/special topics
+\begin{itemize}
+	\item Recommender systems, large scale machine learning
+	
+\end{itemize}
+Advice for building a machine learning system
+\begin{itemize}
+	\item bias/variance, regularization, deciding what to work next, evaluation of a learning algorithm, learning curves, error analysis, ceiling analysis
+\end{itemize}
+
+
+\section*{Week 1}
+\underline{Intro}\\
+Definition of ML\\
+\begin{itemize}
+	\item A program learns from experience (E) w.r.t task(T) and performance measure (P) if its performance on T improves with more E.\\
+	\item With supervised learning, we know what our answers are as a relation of input and output. But with unsupervised learning, we have little idea about the result.\\
+\end{itemize}
+
+\underline{Cost function}
+\begin{itemize}
+	\item \[h_{\theta}(x) = \theta_0 + \theta_1x\]
+	 our goal is to minimize the cost function, which is calculated as square error
+	 \[\min_{\theta_0,\theta_1} J(\theta_0,\theta_1)\]
+	\item where the error function is defined as
+	 \[J(\theta_0,\theta_1) = \frac{1}{2m} \sum_{}^{}(h_\theta(x^{(i)} - y ^{(i)})^2)\]
+\end{itemize}
+
+\underline{Linear regression}
+\begin{center}
+	repeat until converge\{
+		\[\]\}	
+\end{center}
+
+\end{document}
