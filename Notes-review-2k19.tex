@@ -14,7 +14,8 @@
 \usepackage{amsmath}
 \usepackage{listings}  
 \usepackage{amssymb}
-
+\usepackage{array}
+\usepackage{multicol}
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
@@ -70,7 +71,7 @@
 
 \setlength{\parskip}{0.25cm plus 4mm minus 3mm}
 
-
+\renewcommand\labelitemi{-}
 
 \begin{document}
 
@@ -168,9 +169,140 @@ $$ x= \begin{bmatrix}
 	\theta_n
 \end{bmatrix}
 $$
-\item Hypothesis can be represented
+\item Hypothesis can be represented as
+\[h_\theta(x)=\theta^T x \text{ or } <\theta,x>\]
+\item The parameter we're estimating here is $\theta$
+\item Cost function 
+\[J(\theta) = \frac{1}{2m}\sum_{i=1}^{m}((h_\theta)x^{(i)})-y^{(i)})^2\]
+\item Gradient descent
+\[repeat \{ \theta_j := \theta_j - \alpha\frac{1}{m}\sum_{i=1}^{m} (h_\theta(x^{(i)})-y^{(i)})x_j^{(i)}  \text{ ,simultaneously update }\theta_0\ldots \theta_j\}\]
+\item When working with gradient descent in practice, we should... consider
+\item Feature scaling:\\
+Make sure features are in a similar scale, so that each values are roughly between $[-3,3]$
+\item Mean normalization:
+Replace all $x_i$ (except for $x_0$ )with $x_i-\mu_i$ so that the mean is roughly $0$.\\
+\[x_i\leftarrow \frac{x_i-u_i}{s_i}\]
+\item Note that $J$ should always decresase w.r.t to the number of iteration. If it ever increases, that means our $\alpha$, the step param, is too large. We would want to decrease $\alpha$.\\
+\item Pick $\epsilon$ for the convergence threshold value.
+\item Tip: in order to choose $\alpha$, try a range of values. Example: choosing based on a logarithmic scale: \[0.001,0.003,0.01,0.03,\ldots\]
+
+\end{itemize}
+\underline{feature \& polynomial regression}
+\begin{itemize}
+	\item We can combine multiple features into one and change the behaviour of the hypothesis.
+	\item For example we can combine $x_1. x_2$ into a polynomial term by defining that $x_3=x_1*x_2$.
+	\item polynomial regression, instead of linear, we make it quadratic or cubic to tune the hypothesis
+	\[h_\theta(x) = \theta_0 + \theta_1x_1 + \theta_2x_2^2 + \theta_3\sqrt{x}\]
+	Keep in mind that feature scaling is still very important.
+	
 \end{itemize}
 
+\underline{Normal equation: computing parameters analytically}
+\begin{itemize}
+\item Define $X$ as the design matrix. That is 
+$$ \text{if } x^{(i)}= \begin{bmatrix}
+x_0^{(i)} \\
+x_1^{(i)} \\
+\vdots \\
+x_n^{(i)} \end{bmatrix}
+\text{ then we have }
+X =
+\left[
+\begin{array}{ccc}
+-& (x^{(1)})^T & - \\
+- & (x^{(2)})^T & - \\
+& \vdots    &          \\
+- & (x^{(n)})^T & -
+\end{array}
+\right]
+$$
+\item Optimum $\theta$ given by $\theta = (X^TX)^{-1}X^Ty$
+\item With normal equation, you don't need feature scaling. 
+	\begin{multicols}{2}
+	\textit{Gradient descent}:\\
+	$\alpha$ needs to be chosen\\
+	needs many iterations\\
+	works well even when $n$ is large\\
+	
+		\columnbreak
+		
+		\textit{Normal equation}:\\
+		no need to choose $\alpha$\\
+		no iterations needed\\
+		computing $(X^TX)^{-1}$ takes $O(n^3)$\\
+		performs slow with large $n (n\geq 10,000)$
+	\end{multicols}
+\item Note: what if $X^TX$ is non-invertible? Then we use the $pinv$ to generate the pseudo-inverse.
+\end{itemize} 
+\underline{vectorization} helps to compute vectors faster.
 
+\section{Week 3}
+\underline{Binary classification problems}
+\begin{itemize}
+	\item each element $y$ belongs to negative class ($0$) or positive class ($1$).
+\end{itemize}
+\underline{Logistic regression}
+	\begin{itemize}
+		\item We want $0\leq h_\theta(x) \leq 1$\\
+		$h_\theta(x) = g(\theta^Tx)$ where $g$ is the sigmoid function\\
+		$g(z) = \frac{1}{1+e^{-z}}$
+	\end{itemize}
+\underline{decision boundary}
+\begin{itemize}
 
+\item The decision boundary is the line that separates area where $y=0$ or $y=1$.
+\item Note that 
+\[h_\theta(x)\geq0.5\iff \theta^TX\geq 0 \to y=1\]
+\[h_\theta(x)<0.5\iff \theta^TX< 0 \to y=0\]
+	\item we can also work with non-linear decision boundaries
+\end{itemize}
+\underline{Logistic regression model}
+\begin{itemize}
+	
+	\item The training set will be $\{((x^{(1)},y^{(1)}), \ldots (x^{(m)},y^{(m)})))\}$\\
+	There are $m$ examples, and for $\forall x, x\in \mathbb{R}^{n+1}$, $x_0=1$, $y\in\{0,1\}$\\
+	$h_\theta(x) = \frac{1}{1 + e^{-\theta^Tx}}$
+	\item We realize that lin.reg. will not give you a convex function but we \underline{want} a convex function. This brings us to construct a good cost function.
+	\item 
+	 \[
+	cost(h_\theta(x),y)=\left\{
+	\begin{array}{ll}
+	-\log(h_\theta(x)) &\text{ if }y=1\\
+	-\log(1-h_\theta(x))& \text{ if }y=0
+	\end{array}
+	\right.
+	\]
+	\item For example if $y=1$ then if $x=1$ we have cost=$0$. And as hypothesis approach $0$, cost approaches $\infty$ so we're penalized. Similar with the other situation.
+	\item This gives us a convex and local optimum free function.
+	\item The \underline{uncompressed cost function } is:
+	\[\text{cost } (h_\theta(x),y) = -y\log(h_\theta(x))-(1-y)log(1-h_\theta(x))\]
+	\item The total cost unction $J$:
+	\[j(\theta) = \frac{1}{m}\sum_{i=1}^{m} \text{cost } (h_\theta(x),y) \]
+	\item The gradient descent algorithm is essetially the same but referring to a different hypothsis which is $h_\theta(x)$ that now refers to the sigmoid function\\
+	\end{itemize}
+\underline{The vectorized implementation}
+
+\begin{itemize}
+	\item $h=g(X\theta)$, which computes the quantity $h_\theta(x^{(i)})$
+	\item
+	$J(\theta) = \frac{1}{m}(-y^T\log(h)-(1-y)^T\log(1-h))$
+\end{itemize}
+
+\underline{Gradient descent}
+\begin{itemize}
+	\item Idea is to re-arrange the vectors until it's easier to type into matlab.
+	\item Reminder that the matrix $X$ looks like this: 
+	$$X =
+	\left[
+	\begin{array}{ccc}
+	-& (x^{(1)})^T & - \\
+	- & (x^{(2)})^T & - \\
+	& \vdots    &          \\
+	- & (x^{(m)})^T & -
+	\end{array}
+	\right]
+	$$
+	\item X is a $m\times n$ matrix (ignoring the extra leftmost column of $1$s). $\theta$ is a $n\times1$ vector, which makes $X^T\theta$ a $m\times1$ vector which yields the answer.
+	\item Left off at the spot where we have two theta equations.
+\end{itemize}
 \end{document}
