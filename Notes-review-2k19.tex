@@ -303,6 +303,54 @@ $$
 	\right]
 	$$
 	\item X is a $m\times n$ matrix (ignoring the extra leftmost column of $1$s). $\theta$ is a $n\times1$ vector, which makes $X^T\theta$ a $m\times1$ vector which yields the answer.
-	\item Left off at the spot where we have two theta equations.
+	\item \[ \theta:= \theta -\frac{\alpha}{m} \sum_{i=1}^{m} [(h_\theta(x^{(i)})-y^{(i)})x^{(i)}_j]\] note that the $x$ is a column vector.
+	\item the vectorized version is: \[\theta:=\theta - \frac{\alpha}{m}X^T(g(X\theta)-\bar{y})\]
+	\item Advanced optimization: Given the cost function $J(\theta)$ and gradient $\frac{\partial}{\partial\theta_j}J(\theta)$ we can compute $\min_\theta J(\theta)$. 
+	\item These following alorithms are more complex but compute $\theta$ at a faster rate, and there is no need to compute $\alpha$. 
+	\item Conjugate gradient, BFGS, L-BGFGS
+	\item Use the function "fminunc()"
+	
 \end{itemize}
+
+\underline{Logistic optmization for multiple classes}
+\begin{itemize}
+	\item Multiple classification is the situation when $y=\{0,\ldots n\}$. i.e. we have different classes of outcomes. Our strategy is to assign one class as 'positive' and the rest of classes as 'the rest'.
+	\item $y\in\{0,1,2,\ldots,n\}$
+	\item $h_\theta^{(0)}(x) = P(y=0\mid x;\theta)$
+		\item $h_\theta^{(1)}(x) = P(y=1\mid x;\theta)$
+		\item $\vdots$
+			\item $h_\theta^{(n)}(x) = P(y=n\mid x;\theta)$
+	\item The prediction is $\max_i h_\theta^{(i)}(x)$
+\end{itemize}
+
+\underline{The problem of over-fitting}
+\begin{itemize}
+	\item Underfitting: the hypothesis function fits too poorly onto the trend of the data, the function is either too simple or accounting too little features.
+	\item Overfitting: the hypothesis function is not generalized enough. It fits well with given data but presents unnecessary corners/ angles.
+	\item To resolve overfitting, we can either 1) reduce the number of features, i.e. have an algorithm that ditches unimportant features. Or 2) apply regularization to reduce magnitude of some features.
+\end{itemize}
+
+\underline{Cost function} with regularization
+\begin{itemize}
+	\item \[\min_\theta \frac{1}{2m}\sum_{i=1}{m} (h_\theta (x^{(i)})-y^{(i)})^2+\lambda\sum_{i=1}{n}\theta_j^2\]
+	\item We want a big $\lambda$ so that bumps up and forces $\theta_j$ to be small as we penalize bit $\theta_j$.
+	
+\end{itemize}
+\underline{Gradient descent}
+
+\begin{itemize}
+	\item \begin{align*}
+\text{repeat } \{ &
+\theta_0 := \theta_0 - \alpha\frac{1}{m}\sum_{i=1}^{m} (h_\theta(x^{(i)})-y^{(i)})x_0^{(i)} \text{ and}\\
+&\theta_j := \theta_j - \alpha\big[\frac{1}{m}\sum_{i=1}^{m} (h_\theta(x^{(i)})-y^{(i)})x_j^{(i)} + \frac{\lambda}{m}\theta_j\big] \\ 
+&\text{ for } j = \{1,\ldots n\}	\end{align*}
+	\item or we can equivalently write this in one equation:
+	\[\theta_j := \theta_j(1-\alpha\frac{\lambda}{m} - \alpha\frac{1}{m}\sum_{i=1}^{m} (h_\theta(x^{(i)})-y^{(i)})x_j^{(i)} ) \]
+\end{itemize}
+
+\underline{Normal Equation}
+\begin{itemize}
+	\item 
+\end{itemize}
+
 \end{document}
