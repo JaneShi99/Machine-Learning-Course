@@ -107,6 +107,7 @@ Advice for building a machine learning system
 
 
 \section*{Week 1}
+
 \underline{Intro}\\
 Definition of ML\\
 \begin{itemize}
@@ -114,7 +115,7 @@ Definition of ML\\
 	\item With supervised learning, we know what our answers are as a relation of input and output. But with unsupervised learning, we have little idea about the result.\\
 \end{itemize}
 
-\underline{Cost function}
+\underline{Cost function}\\
 \begin{itemize}
 	\item \[h_{\theta}(x) = \theta_0 + \theta_1x\]
 	 our goal is to minimize the cost function, which is calculated as square error
@@ -149,6 +150,7 @@ Definition of ML\\
 \end{center}
 
 \section*{Week 2}
+
 \underline{Multi-feature linear regression}\\
 \begin{itemize}
 \item Hypothesis
@@ -184,16 +186,17 @@ Replace all $x_i$ (except for $x_0$ )with $x_i-\mu_i$ so that the mean is roughl
 \[x_i\leftarrow \frac{x_i-u_i}{s_i}\]
 \item Note that $J$ should always decresase w.r.t to the number of iteration. If it ever increases, that means our $\alpha$, the step param, is too large. We would want to decrease $\alpha$.\\
 \item Pick $\epsilon$ for the convergence threshold value.
-\item Tip: in order to choose $\alpha$, try a range of values. Example: choosing based on a logarithmic scale: \[0.001,0.003,0.01,0.03,\ldots\]
+\item Tip: in order to choose $\alpha$, try a range of values. Example: choosing based on a logarithmic scale: \[0.001,0.003,0.01,0.03,\ldots\]\\
 
 \end{itemize}
+
 \underline{feature \& polynomial regression}
 \begin{itemize}
 	\item We can combine multiple features into one and change the behaviour of the hypothesis.
 	\item For example we can combine $x_1. x_2$ into a polynomial term by defining that $x_3=x_1*x_2$.
 	\item polynomial regression, instead of linear, we make it quadratic or cubic to tune the hypothesis
 	\[h_\theta(x) = \theta_0 + \theta_1x_1 + \theta_2x_2^2 + \theta_3\sqrt{x}\]
-	Keep in mind that feature scaling is still very important.
+	Keep in mind that feature scaling is still very important.\\
 	
 \end{itemize}
 
@@ -234,19 +237,23 @@ $$
 	\end{multicols}
 \item Note: what if $X^TX$ is non-invertible? Then we use the $pinv$ to generate the pseudo-inverse.
 \end{itemize} 
+
 \underline{vectorization} helps to compute vectors faster.
 
-\section{Week 3}
+\section*{Week 3}
+
 \underline{Binary classification problems}
 \begin{itemize}
 	\item each element $y$ belongs to negative class ($0$) or positive class ($1$).
 \end{itemize}
+
 \underline{Logistic regression}
 	\begin{itemize}
 		\item We want $0\leq h_\theta(x) \leq 1$\\
 		$h_\theta(x) = g(\theta^Tx)$ where $g$ is the sigmoid function\\
 		$g(z) = \frac{1}{1+e^{-z}}$
 	\end{itemize}
+
 \underline{decision boundary}
 \begin{itemize}
 
@@ -256,6 +263,7 @@ $$
 \[h_\theta(x)<0.5\iff \theta^TX< 0 \to y=0\]
 	\item we can also work with non-linear decision boundaries
 \end{itemize}
+
 \underline{Logistic regression model}
 \begin{itemize}
 	
@@ -280,6 +288,7 @@ $$
 	\[j(\theta) = \frac{1}{m}\sum_{i=1}^{m} \text{cost } (h_\theta(x),y) \]
 	\item The gradient descent algorithm is essetially the same but referring to a different hypothsis which is $h_\theta(x)$ that now refers to the sigmoid function\\
 	\end{itemize}
+
 \underline{The vectorized implementation}
 
 \begin{itemize}
@@ -336,6 +345,7 @@ $$
 	\item We want a big $\lambda$ so that bumps up and forces $\theta_j$ to be small as we penalize bit $\theta_j$.
 	
 \end{itemize}
+
 \underline{Gradient descent}
 
 \begin{itemize}
@@ -350,7 +360,34 @@ $$
 
 \underline{Normal Equation}
 \begin{itemize}
-	\item 
+	\item \[\theta = (X^TX+\lambda L)^{-1} X^Ty\]
+	\item where $L$ is the same as $I \in M_n^{(n+1)\times (n+1) }$ 
+	with the first $1$ replaced with $0$. Note that if $m<n$ then $X^TX$ is non-invertible but adding $L$ makes it invertible. Hence regulartization also solves non-invertability.	
 \end{itemize}
+
+\underline{Regularized logistic equation} \\
+(note that advanced optimization method me mentioned earlier also works here)
+
+\begin{itemize}
+	\item Regularized cost function for logistic regression is:
+	\[J(\theta) = -\frac{1}{m}\sum_{i=1}^{m} \big[y^{(i)}\log(h_\theta (x^{(i)} ))+ (1-y^{(i)}) \log (1-h_\theta(x^{(i)}))\big] + \frac{\lambda}{2m}\sum_{j=1}^{n}\theta_j^2\] 
+	\item the last term is newly added fort he regularization
+	\item Gradient descent is exactly the same	\item \begin{align*}
+	\text{repeat } \{ &
+	\theta_0 := \theta_0 - \alpha\frac{1}{m}\sum_{i=1}^{m} (h_\theta(x^{(i)})-y^{(i)})x_0^{(i)} \text{ and}\\
+	&\theta_j := \theta_j - \alpha\big[\frac{1}{m}\sum_{i=1}^{m} (h_\theta(x^{(i)})-y^{(i)})x_j^{(i)} + \frac{\lambda}{m}\theta_j\big] \\ 
+	&\text{ for } j = \{1,\ldots n\}	\end{align*}
+\end{itemize}
+
+\underline{Advanced functions} (regularization)
+\begin{itemize}
+	\item $Jval$ does not change while the gradients do change.
+	\item Gradient $1$(index $0$):
+	\[\frac{1}{m} \sum_{i=1}^{m}(h_\theta(X^{(i)} )- y^{(i)})x_0^{(i)} \]
+	\item Gradient $2$(index $1,2,\ldots n$)
+	\[\big(   \frac{1}{m} \sum_{i=1}^{m}(h_\theta(X^{(i)} )- y^{(i)})x_0^{(i)}   \big) +\frac{\lambda}{m}\theta_j\] note that the last term is a newly added item.
+\end{itemize}
+
+\section*{Week 4}
 
 \end{document}
