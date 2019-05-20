@@ -796,4 +796,19 @@ so that
 	
 \end{itemize}
 
+\newpage \section*{Week 10}
+\begin{itemize}
+	\item Note: the more data, better it is.
+	\item Stochastic gradient descent is when you update the data as new data comes along. The batch gradient descent and stochastic gradient descent are fundamentally different. The former is to calculate gradient descent with the dataset as a whole but the later adjusts $\theta$s as it loops through the $m$ examples.
+	\item batch gradient descent uses all $m$ examples each iteration, whereas stochastic drad. desc. uses $1$ each iteration. Mini-batch gradient descent uses $b$ examples each iteration.
+	\item in Stochastic gradient desent, convergence is checked once in a while.
+	\item In large scale ML, MapReduce and data parallelism are used. Map reduce is to split batch g.d. over different computers for computation and the central machine combines the results.
+\end{itemize}
+\section*{Week 11}
+\begin{itemize}
+	\item Examples of more advanced ML topics:
+	\item Example: the photoOCR problem: in the video tutorial we saw how we can design a pipeline that goes through multiple steps of ML algorithm.
+	\item Artificial data analysis: distorts the data to generate more test examples. For example, in letter recognition, we can distort the image in multiple ways so that we can adapt the ML algorithm to better suit the example sets.
+	\item Ceiling analysis: we isolate each step in the pipeline, so that for each porcess in the pipeline we take its maximum performance and see how it improves the algorithm. Then we component-wise improve the process by their priorities.
+\end{itemize}
 \end{document}
