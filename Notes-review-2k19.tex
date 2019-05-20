@@ -16,6 +16,7 @@
 \usepackage{amssymb}
 \usepackage{array}
 \usepackage{multicol}
+\usepackage{tikz}
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
@@ -390,4 +391,73 @@ $$
 
 \section*{Week 4}
 
+\underline{Neural Networks model representation}
+
+\begin{itemize}
+	\item We use matrices and vectors to model neurons and layers. [I'm too lazy to use tikz to draw it]
+	\item Neural network is consisted of multiple layers. There is an input-layer, lots of hidden layer in the middle and the output layer wich is one node. 
+	\item $a_i^{(j)} = $ "activation" of unit $i$ in layer $j$.
+	\item $\Theta^{(j)}$ = matrix of weights controlling function mapping from layer $j$ to layer $j+1$.
+	\item \underline{Vec representation}
+	 \item 
+	 $$  \begin{bmatrix}
+	 x_0 \\
+	 x_1 \\
+	 x_2 \\
+	 x_3 \end{bmatrix}
+	 \to
+	 \left[
+	 \begin{array}{ccc}
+	 a_1^{(2)}\\
+	 a_2^{(2)} \\
+	 a_3^{(2)} 
+	 \end{array}
+	 \right]
+	 \to h_\Theta(x)
+	 $$
+	 \item Layer 1 to layer 2:
+	\begin{align*}
+	a_1^{(2)} = & g(\Theta_{10}^{(1)}x_0 + \Theta_{11}^{(1)}x_1+\Theta_{12}^{(1)}x_2+\Theta_{13}^{(1)}x_3 )\\	a_2^{(2)} = & g(\Theta_{20}^{(1)}x_0 + \Theta_{21}^{(1)}x_1+\Theta_{22}^{(1)}x_2+\Theta_{23}^{(1)}x_3 )\\
+	a_3^{(2)} = & g(\Theta_{30}^{(1)}x_0 + \Theta_{31}^{(1)}x_1+\Theta_{32}^{(1)}x_2+\Theta_{33}^{(1)}x_3 )\\
+	\end{align*}
+	\item Layer 2 to layer 3:
+	\[
+	h_\Theta(x)=a_1^{(3)} = g(\Theta_{10}^{(2)}a_0^{(2)}  + \Theta_{11}^{(2)}a_1^{(2)} + \Theta_{12}^{(2)}a_2^{(2)}+ \Theta_{13}^{(2)}a_3^{(2)}  )
+	\]
+	\item \underline{What is the dimension of $\Theta$?}
+	\item Note that each layer has its own matrix of weights. If network has $S_j$ layers in level $j$ and $S_{j+1}$ layers in level $j+1$ then $\Theta^{(j)}$ has dimensions $S_{j+1}\times (S_j+1)$ where the extra $1$ comes from the bias node.
+	\item the intuition is that NN allows nodes in its hidden layer to 'learn' its own features.
+	
+\end{itemize}
+
+\underline{Vectorization of Computation}
+
+\begin{itemize}
+	\item $a_1^{(2)} = g(z_1^{(2)})$
+	\item $a_2^{(2)} = g(z_2^{(2)})$
+	\item $a_3^{(2)} = g(z_3^{(2)})$
+	\item For layer $j$ , node $k$, $z$ is $z_k^{(j)} = \Theta_{k0}^{(j-1)}x_0 + \Theta_{k1}^{(j-1)}x_1+\ldots + \Theta_{kn}^{(j-1)}x_n$
+	\item 
+	$$  \begin{bmatrix}
+	x_0 \\
+	x_1 \\
+	\vdots\\
+	x_n \end{bmatrix}
+	z^{(j)}
+	\left[
+	\begin{array}{ccc} 
+	z_1^{(j)}\\
+	z_2^{(j)} \\
+	\vdots\\
+	z_n^{(j)} 
+	\end{array}
+	\right]
+	\to h_\Theta(x)
+	$$
+	\item note that \[z^{(j)} = \Theta^{(j-1)}a^{(j-1)}\] since dimentions of $\Theta$ is $S-j\times n+1$ and that dimensions of $a$ is $n+1\times 1$.
+	\item We add the biad unit to layer $j$ after computing $a^{(j)}$ i.e. $a_0^{(j)} = 1$.
+	\item In order to compute the fial hpothesis, we compute the final $z$ vector, where the last matrix of $\Theta$ only has $1$ row, which mulipled by a volumn will result in a real number. \[h_\Theta(x) = a^{(j+1)}=g(z^{(j+1)})\]
+	\item Multi-class classification works similarly with the one-vs all method. We set $h_\Theta(x)\in\mathbb{R}^4$ if there are $4$ classes. \\
+	Then 
+\end{itemize}
 \end{document}
