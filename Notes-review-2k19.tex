@@ -457,7 +457,34 @@ $$
 	\item note that \[z^{(j)} = \Theta^{(j-1)}a^{(j-1)}\] since dimentions of $\Theta$ is $S-j\times n+1$ and that dimensions of $a$ is $n+1\times 1$.
 	\item We add the biad unit to layer $j$ after computing $a^{(j)}$ i.e. $a_0^{(j)} = 1$.
 	\item In order to compute the fial hpothesis, we compute the final $z$ vector, where the last matrix of $\Theta$ only has $1$ row, which mulipled by a volumn will result in a real number. \[h_\Theta(x) = a^{(j+1)}=g(z^{(j+1)})\]
-	\item Multi-class classification works similarly with the one-vs all method. We set $h_\Theta(x)\in\mathbb{R}^4$ if there are $4$ classes. \\
-	Then 
+	\item Multi-class classification- we still use the the one-vs all method. We set $h_\Theta(x)\in\mathbb{R}^4$ if there are $4$ classes. \\
+	\item \[h_\Theta(x) \approx \left[\begin{array}{ccc} 
+	1\\
+	0\\
+	0\\
+	0
+	\end{array}  \right]
+	or 
+	\left[\begin{array}{ccc} 
+		0\\
+		1\\
+		0\\
+		0
+	\end{array}  \right]
+   or \left[ \begin{array}{ccc} 
+   	0\\
+   	0\\
+   	1\\
+   	0
+   \end{array}  \right]
+or \left[ \begin{array}{ccc} 
+	0\\
+	0\\
+	0\\
+	1
+	\end{array} \right] \]  with different input $x$. It returnrs one of the standard vectors $e_i$s given a particular input.
 \end{itemize}
+
+\section*{Week 5}
+Our goal is to learn how to train NNs.
 \end{document}
