@@ -16,6 +16,7 @@
 \usepackage{amssymb}
 \usepackage{array}
 \usepackage{multicol}
+\usepackage{hyperref}
 \usepackage{tikz}
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -106,7 +107,7 @@ Advice for building a machine learning system
 	\item bias/variance, regularization, deciding what to work next, evaluation of a learning algorithm, learning curves, error analysis, ceiling analysis
 \end{itemize}
 
-
+\newpage
 \section*{Week 1}
 
 \underline{Intro}\\
@@ -149,7 +150,7 @@ Definition of ML\\
 	\end{itemize}
 
 \end{center}
-
+\newpage
 \section*{Week 2}
 
 \underline{Multi-feature linear regression}\\
@@ -240,7 +241,7 @@ $$
 \end{itemize} 
 
 \underline{vectorization} helps to compute vectors faster.
-
+\newpage
 \section*{Week 3}
 
 \underline{Binary classification problems}
@@ -388,7 +389,7 @@ $$
 	\item Gradient $2$(index $1,2,\ldots n$)
 	\[\big(   \frac{1}{m} \sum_{i=1}^{m}(h_\theta(X^{(i)} )- y^{(i)})x_0^{(i)}   \big) +\frac{\lambda}{m}\theta_j\] note that the last term is a newly added item.
 \end{itemize}
-
+\newpage
 \section*{Week 4}
 
 \underline{Neural Networks model representation}
@@ -484,7 +485,58 @@ or \left[ \begin{array}{ccc}
 	1
 	\end{array} \right] \]  with different input $x$. It returnrs one of the standard vectors $e_i$s given a particular input.
 \end{itemize}
-
+\newpage
 \section*{Week 5}
 Our goal is to learn how to train NNs.
+
+\underline{The cost function for NN}
+
+\begin{itemize}
+	\item $L$: is the total number of layers in the NN
+	\item $S_l$: is the number of units not counting the bias unit in layer $l$
+	\item $k$: is the number of output unit/ classes
+	\item The cost function is:
+	\[J(\Theta)= -\frac{1}{m}\sum_{i=1}^{m} \sum_{k=1}^{m} \big[ y_k^{(i)}\log((h_\Theta(x^{(i)}))_k) +(1-y_k^{(i)} )(\log(1-h_\Theta(x^{(i)})_k)) \big] 
+	 + \frac{\lambda}{2m} \sum_{l=1}^{L-1} \sum_{i=1}^{s_l}\sum_{j=1}^{s_{l+1}} (\Theta_{j,i}^{(i)})^2 \]
+\end{itemize}
+
+\underline{The back propagation algorithm}
+\begin{itemize}
+	\item The goal is to compute $\min_\theta J(\Theta)$.
+	\item look at the partial derivative of $J(\Theta)$, which is
+	\[ \frac{\partial}{\partial\Theta_{i,j}^{(l)}} J(\Theta)\], The back propagation algorithm works as follows:
+	\item given the training sets $\{ (x^{(1)},y^{(1)}),\ldots , (x^{(m)},y^{(m)}) \}$
+	\item we set $\Delta _{i,j}^{(l)} :=0 \forall i,j$
+	\item For training exmples $t=1 \sim m$:
+	\begin{itemize}
+		\item 1.  Set $a^{(1)}:=x^{(t)}$\\
+		\item 2. Perform forward propagation to compute $a^{(l)}$ for $l=1,2,\ldots L$\\
+		(i.e. set up $z$(intermediate value) and use $g(z)$ to calculate next layers, so on and so on.\\
+		\item 3. $\delta^{(L)} = a^{(L)} - y^{(t)}$\\
+		\item 4. compute $\delta^{(L-1)}, \delta^{(L-2)},\ldots, delta^{(2)}$ using 
+		\[\delta^{(l)} = ((\Theta^{(l)}) ^T\delta^{(l+1)}) .* a^{(l)} .*(1-a^{(l)}) \]
+		where the first value is the calculated value 
+		and that the second value is derivative of $g$ which is $g'$.
+		\[g'(z^{(l)} ) =a^{(l)} .*(1-a^{(l)})\]\\ Note: $.*$ means product form direct vector multiplication. i.e. resulting vector takes $i^{th}$ value from the product of the two $i^{th}$ values from the multiplicants.\\
+		\item 5. $\Delta_{i,j}^{(l)} := \Delta_{i,j}^{(l)} + a_j^{(l)}\delta_j^{(l+1)}$\\ with vectorization we have $\Delta_{i,j}^{(l)} := \Delta_{i,j}^{(l)} + \delta_j^{(l+1)}(a_j^{(l)})^T$
+		\item Hence the update is \[
+		D_{i,j}^{(l)} :=\left\{
+		\begin{array}{ll}
+		\frac{1}{m} \Delta_{i,j}^{(l)}+\lambda_{\Theta i,j}^{(l)}&\text{ if }j\neq 0\\
+		\frac{1}{m}\Delta_{i,j}^{(l)} &\text{ if } j=0
+		\end{array}
+		\right.
+		\]
+		\item In here, $D$ is the accumulator for the gradient where $\frac{\partial}{\partial\Theta_{i,j}^{(l)}} J(\Theta) = D_{i,j}^{(l)}$
+		\item Very useful resources to read about:\\
+		\hyperref[http://neuralnetworksanddeeplearning.com/chap2.html]{''http://neuralnetworksanddeeplearning.com/chap2.html'}
+		\item Tips for implementation:\\
+		1. For this part, the homework assignment did not ask you to implement these steps.\\
+		2. Unrolling is basically changing a matrix into a single column vector, i.e. unrolling\\
+		3. Gradient checking ensures bug-free implementation\\
+		4. Initial theta is set randomly
+		
+	\end{itemize}
+		
+	\end{itemize}
 \end{document}
