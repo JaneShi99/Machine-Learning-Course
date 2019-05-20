@@ -619,5 +619,127 @@ Our goal is to learn how to train NNs.
 	\item Step 2. assign each point to cetroids that is the closest
 	\item Step 3. move the centroids, to new means of assigned points
 	\item Step 4. repeat
+	\item The input is:
+	\\$k$: the number of clusters.
+	\\Training set: $\{x^1\ldots x^m\}$ for each $x^i\in\mathbb{R}^k$
+	\\It can also be used for non-separating clusters, although it may not seem like an obvious pattern.
 \end{itemize}
+
+\underline{Optimization objectives}
+\begin{itemize}
+	\item $c^{(i)}$ is the index of cluster $(1\sim k)$ that $x^{(i)}$ is currently assigned to.
+	\item $u_k$ is the cluster centroid $k$.
+	\item $u_c^{(i)}$ is the cluster centroid that $x^{(i)}$ is currently assigned to.
+	\item Our objective is: \[min_{c,\mu} J(c^{(1)}, c^{(2)},\ldots c^{(m)},\mu_1,\ldots,\mu_k) \] where\[  
+	J(c^{(1)}, c^{(2)},\ldots c^{(m)},\mu_1,\ldots,\mu_k) 
+	= \frac{1}{m}\sum_{i=1}^{m} \lVert x^{(i)}-\mu_c^{(i)}\rVert^2
+	\]
+	
+\end{itemize}
+\underline{Random initialize clustering centroid}
+\begin{itemize}
+	\item select $k<m$, randomly choose $k$ training examples, and the $\mu_1,\ldots,\mu_k$ to these examples. 
+	\item To avoid bad clustering, we can initate randomly many times, and compare the $J$ and pick the one that has smallest cost to start with.
+	
+\end{itemize}
+
+\underline{Pick \# of clusters}
+\begin{itemize}
+	\item Plot \# of clusters on x-axis and cost function on y-axis, and locate the "elbow" .
+	\item Another method is to pick $k$ from what you want to do with the result of learning.
+\end{itemize}
+
+\underline{Data compression}
+\begin{itemize}
+	\item reducing redundant data. For example, if we're to record dataset that forms one line then using 2-d structures to record this data is redundant.
+\end{itemize}
+
+\underline{visualization}
+\begin{itemize}
+	\item we choose the 2 or 3 of the features and plot them. This helps us to recognize the relationships between features.
+\end{itemize}
+
+\underline{PCA: Principle component analysis}
+\begin{itemize}
+	\item our goal is to find a surface of a lower dimension such that is has the smallest sum of distance from each point in the dataset to the projected point.
+	\item Note that PCA is not lin.reg, because PCA minimizes the perpendicular distance (has nothing to do with the outcome y) where lin.reg predicts y by minimizing vertial distance.
+\end{itemize}
+
+\underline{The PCA algorithm}
+
+\begin{itemize}
+	\item The training set is $\{x^1,\ldots x^m\}$
+	\item First, we must do pre-processing (or feature scaling, mean normalization)
+	\item $u_j=\frac{1}{m}\sum_{i=1}^{m}x_j^{(i)}$, and replace each $x_j^{(i)}$ with $x_i-\mu_i$
+	\item We then also scale the features i.e. $x_j^{(i)} \leftarrow \frac{x_j^{(i)}-\mu_j}{s_j}$
+	\item Then, we compute the vector $\mu_i$ and projections/ new representations.
+	\item We reduce the data from dim $n$ to dim $k$.
+	The covariance matrix is : $\Sigma :\frac{1}{m}\sum_{i=1}^{n}(x^{(i)})(x^{(i)})^T $
+	\item The eigenvalues of $\Sigma$ is $ [U,S,V] = svd( \Sigma) $
+	\item $U$ will be a $n\times n$ matrix whose columns are $u^1,\ldots u^m$. i.e. the eigenvectors.
+\[
+A = 
+\left[
+\begin{array}{cccc}
+\mid & \mid &        & \mid \\
+\mu_{1}    & \mu_{2}    & \ldots & \mu_{m}    \\
+\mid & \mid &        & \mid 
+\end{array}
+\right] \in \mathbb{R}^{n\times m} \text{ where we choose the first k as the k dimensions}\]
+
+so that 
+\[
+\mu_{reduce} = 
+\left[
+\begin{array}{cccc}
+\mid & \mid &        & \mid \\
+\mu^{1}    & \mu^{2}    & \ldots & \mu^{k}    \\
+\mid & \mid &        & \mid 
+\end{array}
+\right]
+ z^{(i)} = \mu_{reduce}^Tx^{(i)}
+\]
+\end{itemize}
+
+\underline{Reconstruction from compressed representation}
+\begin{itemize}
+	\item $z=\mu_{reduce}^T*X$
+	\item $X_{approx} = \mu_{reduce}*z$
+\end{itemize}
+
+\underline{Applying PCA}
+\begin{itemize}
+	\item How to choose $k$?
+	\begin{align*}
+	\text{The average square projection error is }&=\frac{1}{m}\sum_{i=1}^{m}\mid\mid x^{(i)}-x_{approx}^{(i)}\mid\mid ^2\\
+	\text{total variance in data is }&=\frac{1}{m}\sum_{i=1}^{m}\mid\mid x^{(i)} \mid\mid ^2\\
+	\end{align*}
+		\item We choose $k$ to be the smallest value such that
+		\[\frac{ \frac{1}{m}\sum_{i=1}^{m}\mid\mid x^{(i)}-x_{approx}^{(i)}\mid\mid ^2}{\frac{1}{m}\sum_{i=1}^{m}\mid\mid x^{(i)} \mid\mid ^2} \leq 0.01\]
+		\item That is, we need $99\%$ of variance to be retained.
+		\item For the algorithm implementation, $[U,S,V] = svd(\Sigma)$, where $S$ is a diagonal matrix. Pick smallest $k$ such that
+		\[ \frac{\sum_{i=1}^{k}S_{ii}}{\sum_{i=1}^{m}S_{ii}} \geq0.99\]
+\end{itemize}
+
+\underline{How to use PCA to speed up learning algorithm}
+
+\begin{itemize}
+	\item When running PCA, we only run it on the training set.
+	\item To speed it up, we have input $\{(x^1,y^1),\ldots (x^m,y^m) \}$ for $\forall x x\in\mathbb{R}^{10000}$. Then the extracted input is $\{z^1,z^2,\ldots z^m\in \mathbb{R}^{1000}\}$\\
+	\item Now we train $\{(z^1,y^1),\ldots (z^m,y^m) \}$.
+	
+\end{itemize}
+
+\underline{Summary of application of PCA}
+
+\begin{itemize}
+	\item Compression: reduce storage to store data, and speed up the learning algos.
+	\item Visualization: use $k=2$ or $k=3$
+	\item Note: don't use PCA to prevent overfitting, and we should use regularization instead.
+	\item Note: when designing system, first try without PCA, and only use PCA is necessary.
+\end{itemize}
+
+\newpage\section*{Week 9}
+
+
 \end{document}
