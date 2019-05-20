@@ -539,4 +539,85 @@ Our goal is to learn how to train NNs.
 	\end{itemize}
 		
 	\end{itemize}
+
+\newpage
+\section*{Week 6}
+
+\underline{Evaluating a learning algorithm}
+\begin{itemize}
+	\item What are some ways to arrive at a better hypothesis?\\
+	More examples\\
+	more / less \# of features\\
+	more / less values of $\lambda$
+	\item To evaluate a hypothesis, we split the data into training set and the test sets. They usually have 70\% and 30\% respectively.
+	\item Then we learn $\Theta$, minimize $j_{train}(\Theta)$ using the training set. Next step we evaluate how good our hypothesiss is by calculating the test set error with $J_{test}(\Theta)$.
+	\item to compute the test set error for lin.reg., it is half of the square error, whereas for log.reg. it is the average of  the $err$ function where it is $1$ if hypothesis is in the right rage, $0$ otherwise.
+	
+\end{itemize}
+
+\underline{Model selection}
+
+\begin{itemize}
+	\item We can break down the data-set into three data-sets:
+	\[\text{training set, cross validation set, and test set} \] taking up 60\%, 20\%, 20\% respectively.
+	\item We can test different degree of polynomial, evaluate their error functions.\\
+	1. optimize params in $\Theta$ using training set for each degree.\\
+	2. find the polynomial degree $d$ that produce least error by cross validation set.\\
+	3. estimate generalized error with test set.
+	
+\end{itemize}
+
+\underline{Diagnosing bias, variace and  regularization,  learning curves}
+
+\begin{itemize}
+	\item Better explanation seen in the handwritten notes- it has graph examples.
+
+\end{itemize}
+
+\underline{debugging a learning algorithm}
+
+	\begin{align*}
+	&\text{problem} &\text{try}\\
+	&\text{high var} &\text{get more training data}\\
+	&\text{high var} &\text{less features}\\
+	&\text{high var}&\text{increase }\lambda\\
+	&\text{high bias} &\text{get more features}\\
+	&\text{high bias} &\text{add polynomial features}\\
+	&\text{high bias} &\text{decrease }\lambda\\	
+	\end{align*}
+	Note that small NN are computationally cheap but prone to underfitting.\\
+	Large NN are computationally expensive but prone to overfitting. Note that $\lambda$ regularization can be use to fix this problem.
+
+\underline{Error analysis}
+\begin{itemize}
+	\item Always implement a quick implementation, and use that to decide how to spend your time.\\
+	\item Plot learning curves and use that to decide about your next steps. You can manually examine your errors or impementa metric that returns your performance.
+	\item For skewed classes, for example one class has very large size and another has very little, we use another error metric that accounts true and false positives and negatives. ($F$ scores)
+\end{itemize}
+
+\newpage\section*{Week 7}
+\underline{SVMs}
+\begin{itemize}
+	\item SVM for logistic regression works with different cost funtion, that is easier to compute for the computer. It allows a large margin classifier that draws the decision boundary that stays naturally far apart from the dataset. \underline{kernels} take data as input and transform them into the required forms.
+	\item When \underline{using a SVM}, we can use nice libraries suchas $liblinear$ or $libsm$. We need to choose kerner(linear kernel a.k.a. no-kernel or gaussian kernel) as well as parameter $c$.
+	\item Other choices of kernel must satisfy \underline{Mercer's theorem} so that it does not diverge.
+	\item for multi-classification, we can use the built-in SVM package or the one-vs-all methods.
+	
+	\end{itemize}
+
+\newpage\section*{Week 8}
+\underline{Unsupervised learning}
+\begin{itemize}
+	\item The given input has no labels
+	\item the algorithm dins clustering data, and it identifies structures. It ca be used for identifying market segmentations, social network analysis, organize computer clusters, and galaxy formation/astronomical data analysis.
+\end{itemize}
+
+\underline{k-means algorithm}
+\begin{itemize}
+	\item This is used to identify clustering.
+	\item Step 1. Initialize cluster centroids randomly
+	\item Step 2. assign each point to cetroids that is the closest
+	\item Step 3. move the centroids, to new means of assigned points
+	\item Step 4. repeat
+\end{itemize}
 \end{document}
