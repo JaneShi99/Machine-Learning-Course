@@ -739,7 +739,61 @@ so that
 	\item Note: when designing system, first try without PCA, and only use PCA is necessary.
 \end{itemize}
 
+
+
 \newpage\section*{Week 9}
 
+\underline{Anomaly detection}
+\begin{itemize}
+	\item Detects anomally behaviouring data, by using Gaussian distribution
+	\item Density estimation: training set $= \{x^1,\ldots x^m\} \forall x, x\in \mathbb{R}^{n}$
+	\item $P(x) = \prod_{j=1}^{n} p(x_j;u_j,\theta_j^2)$
+\end{itemize}
+
+\underline{Anomaly detection algorithm}
+\begin{itemize}
+	\item 1. Choose features $x_i$ that you think might be anomaly
+	\item 2. fit params $u_1,\ldots u_n,\theta^2_1,\ldots\theta_n^2 \to u_j=\frac{1}{m}\sum x_j^{(i)}, \theta_j^2=\frac{1}{m}\sum(x_j^{(i)} -u_j)^2$
+	\item 3. given new example $x$, compute $p(x)= \prod_{j=1}^{n} p(x_j;u_j,\theta_j^2)$.
+\end{itemize}
+
+\underline{Developing and evaluating an anomaly detection system}
+\begin{itemize}
+	\item We use the training set, cross validation set, and the test set.
+	\item To evaluate whether a training data is anomaly, we first fit the models using training and cv sets, where we pick a threshold value $\epsilon$. If $p$ returns greater than $\epsilon$, it is normal, otherwise an anomaly.
+	\item We use the cv set to find $\epsilon$.
+	\item Note that multivariate Gaussian distribution can detect abnormal relationships between features. It is more computationaly expensive. To do so, we must had $m>n$ or else $\Sigma$ is singular.
+\end{itemize}
+
+\underline{When should we use anomaly detection? When to use supervised learning?}
+\begin{itemize}
+	\item AD\\
+	Very small number of positive example, and large number of negative examples\\
+	there are many types of anomaly, that makes learning difficult\\
+	very possible to encounter anomaly in the future that we have never seen.
+	\item SL\\
+	Large number of positive and negative examples\\
+	future anomaly may look like previous ones\\
+	there is enough positive examples for the algorithm to learn.
+	
+\end{itemize}
+
+\underline{Recommender systems}
+\begin{itemize}
+	\item give recommendation to subscribers to a service
+	\item this is a high-priority to many companies i.e. Predicting movies for N*etflix.
+	\item \underline{Collaborative filtering algorithms}
+	\item Let $x$ be the features for users and the $\theta$ be the features for movies.
+	\item 1. Initialize $x^1, \ldots x^{nm},\theta^1,\ldots, \theta^{nu}\in \mathbb{R}^n$ to small values.
+	\item 2. minimize $J(x^1, \ldots x^{nm},\theta^1,\ldots, \theta^{nu})$ using gradient descent or other advanced optimization algorithms. for example
+	\begin{align*}
+	x_k^i &= x_k^i - \alpha(\sum_{j:r(i,j)=1} ((\theta^{(j)})^Tx^{(i)} -y^{i,j})\theta_k^{(i)}+\lambda x_k^{(i)})\\
+	\theta_k^j &= \theta_k^j - \alpha(\sum_{i:r(i,j)=1} ((\theta^{(j)})^Tx^{(i)} -y^{i,j})x_k^{(i)}+\lambda \theta_k^{(j)})
+	\end{align*}
+	\item 3. For a user with parameters $\theta$ and a movie with (learned) features $x$, predict a star rating of $\theta^Tx$.\\
+	The vectorized implemenation is in video, "low rank matrix factorization".
+	\item For newly registered users,we use mean normalization to predict entries with no previous data. 
+	
+\end{itemize}
 
 \end{document}
